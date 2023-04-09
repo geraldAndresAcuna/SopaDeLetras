@@ -130,18 +130,18 @@ public class sopa {
         switch (direccion) {
             case 1:
                 resultado = validarHorizontal(palabra, columna, fila);
-            break;
+                break;
             case 2:
-              resultado = validarHorizontalInvertida(palabra, columna, fila);
-              break;
+                resultado = validarHorizontalInvertida(palabra, columna, fila);
+                break;
             case 3:
-             resultado = validarVertical(palabra, columna, fila);
-            break;
+                resultado = validarVertical(palabra, columna, fila);
+                break;
             case 4:
-            resultado = validarVerticalInvertido(palabra, columna, fila);
-            break;
-            default :
-            break;
+                resultado = validarVerticalInvertido(palabra, columna, fila);
+                break;
+            default:
+                break;
         }
         return !resultado;
     }
@@ -225,7 +225,7 @@ public class sopa {
                     haciaArriba(palabra, fila, columna);
                     break;
                 default:
-                break;
+                    break;
             }
             contador++;
         } while (contador < 2);
@@ -407,18 +407,18 @@ public class sopa {
         switch (direccion) {
             case 1:
                 resultado = palabraEncontradaHaciaLaIzquierdaValidacion(palabra, fila, columna);
-            break;
+                break;
             case 2:
                 resultado = palabraEncontradaHaciaLaDerechaValidacion(palabra, fila, columna);
-            break;
+                break;
             case 3:
                 resultado = palabraEncontradaHaciaAbajoValidacion(palabra, fila, columna);
-            break;
+                break;
             case 4:
                 resultado = palabraEncontradaHaciaArribaValidacion(palabra, fila, columna);
-            break;
+                break;
             default:
-            break;
+                break;
         }
         return resultado;
     }
@@ -427,18 +427,18 @@ public class sopa {
         switch (direccion) {
             case 1:
                 palabraEncontradaHaciaLaIzquierda(palabra, fila, columna);
-            break;
+                break;
             case 2:
                 palabraEncontradaHaciaLaDerecha(palabra, fila, columna);
-            break;
+                break;
             case 3:
                 palabraEncontradaHaciaAbajo(palabra, fila, columna);
-            break;
+                break;
             case 4:
                 palabraEncontradaHaciaArriba(palabra, fila, columna);
-            break;
+                break;
             default:
-            break;
+                break;
         }
     }
 
