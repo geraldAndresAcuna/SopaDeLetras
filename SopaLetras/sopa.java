@@ -7,7 +7,7 @@ public class sopa {
     static PrintStream out = System.out;
     static String[][] sopaLetras = new String[10][10];
     static String[][] sopaPalabraReinicio = new String[10][10];
-    static String[] sopaPalabras = new String[2];
+    static String[][] sopaPalabras = new String[10][10];
     static int contador = 0;
     final static char[] ALFABETOMINUSCULA = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ',
             'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
@@ -128,12 +128,20 @@ public class sopa {
     static boolean validacionDireccion(String palabra, int direccion, int fila, int columna) {
         boolean resultado = false;
         switch (direccion) {
-            case 1 -> resultado = validarHorizontal(palabra, columna, fila);
-            case 2 -> resultado = validarHorizontalInvertida(palabra, columna, fila);
-            case 3 -> resultado = validarVertical(palabra, columna, fila);
-            case 4 -> resultado = validarVerticalInvertido(palabra, columna, fila);
-            default -> {
-            }
+            case 1:
+                resultado = validarHorizontal(palabra, columna, fila);
+            break;
+            case 2:
+              resultado = validarHorizontalInvertida(palabra, columna, fila);
+              break;
+            case 3:
+             resultado = validarVertical(palabra, columna, fila);
+            break;
+            case 4:
+            resultado = validarVerticalInvertido(palabra, columna, fila);
+            break;
+            default :
+            break;
         }
         return !resultado;
     }
@@ -203,14 +211,21 @@ public class sopa {
                     imprimirTexto("La palabra excede el tamaño permitido de acuerdo a la posición dentro de la matriz");
                 }
             } while (validacionDireccion(palabra, opcion, fila, columna));
-            sopaPalabras[contador] = palabra;
             switch (opcion) {
-                case 1 -> haciaLaIzquierda(palabra, fila, columna);
-                case 2 -> haciaLaDerecha(palabra, fila, columna);
-                case 3 -> haciaAbajo(palabra, fila, columna);
-                case 4 -> haciaArriba(palabra, fila, columna);
-                default -> {
-                }
+                case 1:
+                    haciaLaIzquierda(palabra, fila, columna);
+                    break;
+                case 2:
+                    haciaLaDerecha(palabra, fila, columna);
+                    break;
+                case 3:
+                    haciaAbajo(palabra, fila, columna);
+                    break;
+                case 4:
+                    haciaArriba(palabra, fila, columna);
+                    break;
+                default:
+                break;
             }
             contador++;
         } while (contador < 2);
@@ -390,24 +405,40 @@ public class sopa {
     static boolean validarDireccionPalabra(int direccion, String palabra, int fila, int columna) {
         boolean resultado = false;
         switch (direccion) {
-            case 1 -> resultado = palabraEncontradaHaciaLaIzquierdaValidacion(palabra, fila, columna);
-            case 2 -> resultado = palabraEncontradaHaciaLaDerechaValidacion(palabra, fila, columna);
-            case 3 -> resultado = palabraEncontradaHaciaAbajoValidacion(palabra, fila, columna);
-            case 4 -> resultado = palabraEncontradaHaciaArribaValidacion(palabra, fila, columna);
-            default -> {
-            }
+            case 1:
+                resultado = palabraEncontradaHaciaLaIzquierdaValidacion(palabra, fila, columna);
+            break;
+            case 2:
+                resultado = palabraEncontradaHaciaLaDerechaValidacion(palabra, fila, columna);
+            break;
+            case 3:
+                resultado = palabraEncontradaHaciaAbajoValidacion(palabra, fila, columna);
+            break;
+            case 4:
+                resultado = palabraEncontradaHaciaArribaValidacion(palabra, fila, columna);
+            break;
+            default:
+            break;
         }
         return resultado;
     }
 
     static void validarPalabraEncontrada(int direccion, String palabra, int fila, int columna) throws IOException {
         switch (direccion) {
-            case 1 -> palabraEncontradaHaciaLaIzquierda(palabra, fila, columna);
-            case 2 -> palabraEncontradaHaciaLaDerecha(palabra, fila, columna);
-            case 3 -> palabraEncontradaHaciaAbajo(palabra, fila, columna);
-            case 4 -> palabraEncontradaHaciaArriba(palabra, fila, columna);
-            default -> {
-            }
+            case 1:
+                palabraEncontradaHaciaLaIzquierda(palabra, fila, columna);
+            break;
+            case 2:
+                palabraEncontradaHaciaLaDerecha(palabra, fila, columna);
+            break;
+            case 3:
+                palabraEncontradaHaciaAbajo(palabra, fila, columna);
+            break;
+            case 4:
+                palabraEncontradaHaciaArriba(palabra, fila, columna);
+            break;
+            default:
+            break;
         }
     }
 
