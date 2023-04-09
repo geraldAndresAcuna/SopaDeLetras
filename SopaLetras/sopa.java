@@ -14,31 +14,26 @@ public class sopa {
     final static char[] ALFABETOMAYUSCULA = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ',
             'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
-    // LDF
     static void imprimirTexto(String msj) {
         out.println(msj);
     }
 
-    // LDF
     static String leerTexto() throws IOException {
         return in.readLine();
     }
 
-    // LDF
     static void posicionesHorizontal() {
         for (int i = 0; i < sopaLetras.length; i++) {
             sopaLetras[0][i] = "" + (i + 1 - 1) + " | ";
         }
     }
 
-    // LDF
     static void posicionesVertical() {
         for (int i = 0; i < sopaLetras.length; i++) {
             sopaLetras[i][0] = " | " + (i + 1 - 1) + (" | ");
         }
     }
 
-    // LDF
     static void haciaLaIzquierda(String palabra, int filas, int columnas) {
         for (int i = 0; i < palabra.length(); i++) {
             sopaLetras[filas][columnas + i] = "" + palabra.charAt(i) + "\033[97m | ";
@@ -46,7 +41,6 @@ public class sopa {
         }
     }
 
-    // LDF
     static void haciaLaDerecha(String palabra, int filas, int columnas) {
         int k = 0;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
@@ -56,7 +50,6 @@ public class sopa {
         }
     }
 
-    // LDF
     static void haciaAbajo(String palabra, int filas, int columnas) {
         for (int i = 0; i < palabra.length(); i++) {
             sopaLetras[filas + i][columnas] = "" + palabra.charAt(i) + "\033[97m | ";
@@ -64,7 +57,6 @@ public class sopa {
         }
     }
 
-    // LDF
     static void haciaArriba(String palabra, int filas, int columnas) {
         int k = 0;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
@@ -74,7 +66,6 @@ public class sopa {
         }
     }
 
-    // LDF
     static boolean validarVertical(String palabra, int columna, int fila) {
         boolean valido;
         int limite = sopaLetras.length - fila;
@@ -86,7 +77,6 @@ public class sopa {
         return valido;
     }
 
-    // LDF
     static boolean validarVerticalInvertido(String palabra, int columna, int fila) {
         boolean valido;
         int limite;
@@ -99,7 +89,6 @@ public class sopa {
         return valido;
     }
 
-    // LDF
     static boolean validarHorizontal(String palabra, int columna, int fila) {
         boolean valido;
         int limite;
@@ -124,7 +113,6 @@ public class sopa {
         return valido;
     }
 
-    // LDF
     static boolean validacionDireccion(String palabra, int direccion, int fila, int columna) {
         boolean resultado = false;
         switch (direccion) {
@@ -160,7 +148,6 @@ public class sopa {
         }
     }
 
-    // LDF
     static void imprimirSopa(String[][] sopa) throws IOException {
         if (contador != 0) {
             for (int i = 0; i < sopa.length; i++) {
