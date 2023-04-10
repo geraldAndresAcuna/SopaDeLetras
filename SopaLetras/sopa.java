@@ -7,6 +7,8 @@ public class sopa {
     static PrintStream out = System.out;
     static String[][] sopaLetras = new String[10][10];
     static String[][] sopaPalabraReinicio = new String[10][10];
+    static String[][] sopaPalabraReinicioPrueba = new String[10][10];
+
     static String[][] sopaPalabras = new String[10][10];
     final static char[] ALFABETOMINUSCULA = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ',
             'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
@@ -33,13 +35,15 @@ public class sopa {
         }
     }
 
-    static void haciaLaIzquierda(String palabra, int filas, int columnas) {
+    static void haciaLaIzquierda(String palabra, int filas, int columnas) throws IOException {
+        // llenarMatrizPalabrasHaciaIzquierda(palabra, filas, columnas);
         for (int i = 0; i < palabra.length(); i++) {
             sopaLetras[filas][columnas + i] = "" + palabra.charAt(i) + "\033[97m | ";
         }
     }
 
-    static void haciaLaDerecha(String palabra, int filas, int columnas) {
+    static void haciaLaDerecha(String palabra, int filas, int columnas) throws IOException {
+        llenarMatrizPalabrashaciaLaDerecha(palabra, filas, columnas);
         int k = 0;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             sopaLetras[filas][columnas + k] = "" + palabra.charAt(i) + "\033[97m | ";
@@ -47,13 +51,15 @@ public class sopa {
         }
     }
 
-    static void haciaAbajo(String palabra, int filas, int columnas) {
+    static void haciaAbajo(String palabra, int filas, int columnas) throws IOException {
+        llenarMatrizPalabrashaciaAbajo(palabra, filas, columnas);
         for (int i = 0; i < palabra.length(); i++) {
             sopaLetras[filas + i][columnas] = "" + palabra.charAt(i) + "\033[97m | ";
         }
     }
 
-    static void haciaArriba(String palabra, int filas, int columnas) {
+    static void haciaArriba(String palabra, int filas, int columnas) throws IOException {
+        llenarMatrizPalabrashaciaArriba(palabra, filas, columnas);
         int k = 0;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             sopaLetras[filas + k][columnas] = "" + palabra.charAt(i) + "\033[97m | ";
@@ -61,9 +67,9 @@ public class sopa {
         }
     }
 
-    static boolean validarVertical(String palabra, int columna, int fila) {
+    static boolean validarVertical(String palabra, int columna, int fila, String[][] sopa) {
         boolean valido;
-        int limite = sopaLetras.length - fila;
+        int limite = sopa.length - fila;
         if (palabra.length() > limite || fila <= 0 || columna <= 0 || columna >= 10) {
             valido = false;
         } else {
@@ -72,10 +78,10 @@ public class sopa {
         return valido;
     }
 
-    static boolean validarVerticalInvertido(String palabra, int columna, int fila) {
+    static boolean validarVerticalInvertido(String palabra, int columna, int fila, String[][] sopa) {
         boolean valido;
         int limite;
-        limite = sopaLetras.length - fila;
+        limite = sopa.length - fila;
         if (limite < palabra.length() || columna <= 0 || fila <= 0 || fila >= 10) {
             valido = false;
         } else {
@@ -84,10 +90,10 @@ public class sopa {
         return valido;
     }
 
-    static boolean validarHorizontal(String palabra, int columna, int fila) {
+    static boolean validarHorizontal(String palabra, int columna, int fila, String[][] sopa) {
         boolean valido;
         int limite;
-        limite = sopaLetras.length - columna;
+        limite = sopa.length - columna;
         if (palabra.length() > limite || columna <= 0 || fila <= 0 || fila >= 10) {
             valido = false;
         } else {
@@ -96,10 +102,10 @@ public class sopa {
         return valido;
     }
 
-    static boolean validarHorizontalInvertida(String palabra, int columna, int fila) {
+    static boolean validarHorizontalInvertida(String palabra, int columna, int fila, String[][] sopa) {
         boolean valido;
         int limite;
-        limite = sopaLetras.length - columna;
+        limite = sopa.length - columna;
         if (limite < palabra.length() || columna <= 0 || fila <= 0 || fila >= 10) {
             valido = false;
         } else {
@@ -108,20 +114,41 @@ public class sopa {
         return valido;
     }
 
-    static boolean validacionDireccion(String palabra, int direccion, int fila, int columna) {
+    static boolean validacionDireccionPalabras(String palabra, int direccion, int fila, int columna) {
         boolean resultado = false;
         switch (direccion) {
             case 1:
-                resultado = validarHorizontal(palabra, columna, fila);
+                resultado = validarHorizontal(palabra, columna, fila, sopaPalabras);
                 break;
             case 2:
-                resultado = validarHorizontalInvertida(palabra, columna, fila);
+                resultado = validarHorizontalInvertida(palabra, columna, fila, sopaPalabras);
                 break;
             case 3:
-                resultado = validarVertical(palabra, columna, fila);
+                resultado = validarVertical(palabra, columna, fila, sopaPalabras);
                 break;
             case 4:
-                resultado = validarVerticalInvertido(palabra, columna, fila);
+                resultado = validarVerticalInvertido(palabra, columna, fila, sopaPalabras);
+                break;
+            default:
+                break;
+        }
+        return !resultado;
+    }
+
+    static boolean validacionDireccionLetras(String palabra, int direccion, int fila, int columna) {
+        boolean resultado = false;
+        switch (direccion) {
+            case 1:
+                resultado = validarHorizontal(palabra, columna, fila, sopaLetras);
+                break;
+            case 2:
+                resultado = validarHorizontalInvertida(palabra, columna, fila, sopaLetras);
+                break;
+            case 3:
+                resultado = validarVertical(palabra, columna, fila, sopaLetras);
+                break;
+            case 4:
+                resultado = validarVerticalInvertido(palabra, columna, fila, sopaLetras);
                 break;
             default:
                 break;
@@ -163,12 +190,47 @@ public class sopa {
         }
     }
 
-    static boolean llenarMatrizPalabrasHaciaIzquierdaValidacion(String palabra, int filas, int columnas)
+    static void llenarMatrizPalabrashaciaAbajo(String palabra, int filas, int columnas) {
+        for (int i = 0; i < palabra.length(); i++) {
+            if (sopaPalabras[filas + i][columnas] == null) {
+                sopaPalabras[filas + i][columnas] = "" + palabra.charAt(i) + "\033[97m | ";
+            }
+        }
+    }
+
+    static void llenarMatrizPalabrashaciaArriba(String palabra, int filas, int columnas) {
+        int k = 0;
+        for (int i = (palabra.length() - 1); i >= 0; i--) {
+            if (sopaPalabras[filas + k][columnas] == null) {
+                sopaPalabras[filas + k][columnas] = "" + palabra.charAt(i) + "\033[97m | ";
+            }
+            k++;
+        }
+    }
+
+    static boolean llenarMatrizPalabrasHaciaArribaValidacion(String palabra, int filas, int columnas)
+            throws IOException {
+        int contador = 0;
+        boolean validacion = false;
+        int k = 0;
+        for (int i = (palabra.length() - 1); i >= 0; i--) {
+            if (sopaPalabras[filas + k][columnas] == null) {
+                contador++;
+            }
+            k++;
+        }
+        if (contador == palabra.length()) {
+            validacion = true;
+        }
+        return validacion;
+    }
+
+    static boolean llenarMatrizPalabrasHaciaAbajoValidacion(String palabra, int filas, int columnas)
             throws IOException {
         int contador = 0;
         boolean validacion = false;
         for (int i = 0; i < palabra.length(); i++) {
-            if (sopaPalabras[filas][columnas + i] == null) {
+            if (sopaPalabras[filas + i][columnas] == null) {
                 contador++;
             }
         }
@@ -226,47 +288,42 @@ public class sopa {
         imprimirTexto("Para configurar el juego debe de ingresar 6 palabras validas");
         do {
             do {
-                do {
-                    imprimirTexto("Ingrese la palabra " + (contador + 1) + ": ");
-                    palabra = leerTexto();
-                    imprimirTexto("Ingrese la direccion en la que desea ingresar la palabra: \n" +
-                            "1) Derecha a izquierda\n" +
-                            "2) Izquierda a derecha\n" +
-                            "3) Arriba a abajo\n" +
-                            "4) Abajo a arriba");
-                    imprimirTexto("Seleccione una opción");
-                    opcion = Integer.parseInt(leerTexto());
-                    imprimirTexto("Ingrese la fila en donde empezara la palabra: ");
-                    fila = Integer.parseInt(leerTexto());
-                    imprimirTexto("Ingrese la columna en la que va a estar la palabra: ");
-                    columna = Integer.parseInt(leerTexto());
-                    if (validacionDireccion(palabra, opcion, fila, columna)) {
-                        imprimirTexto(
-                                "La palabra excede el tamaño permitido de acuerdo a la posición dentro de la matriz");
-                    }
-                    if (!llenarMatrizPalabrasHaciaIzquierdaValidacion(palabra, fila, columna)) {
-                        imprimirTexto("No se puede registrar porque ya los espacios estan ocupados");
-                    }
-                } while (!llenarMatrizPalabrasHaciaIzquierdaValidacion(palabra, fila, columna));
-            } while (validacionDireccion(palabra, opcion, fila, columna));
+                imprimirTexto("Ingrese la palabra " + (contador + 1) + ": ");
+                palabra = leerTexto();
+                imprimirTexto("Ingrese la direccion en la que desea ingresar la palabra: \n" +
+                        "1) Derecha a izquierda\n" +
+                        "2) Izquierda a derecha\n" +
+                        "3) Arriba a abajo\n" +
+                        "4) Abajo a arriba");
+                imprimirTexto("Seleccione una opción");
+                opcion = Integer.parseInt(leerTexto());
+                imprimirTexto("Ingrese la fila en donde empezara la palabra: ");
+                fila = Integer.parseInt(leerTexto());
+                imprimirTexto("Ingrese la columna en la que va a estar la palabra: ");
+                columna = Integer.parseInt(leerTexto());
+                if (validacionDireccionLetras(palabra, opcion, fila, columna)
+                        && validacionDireccionPalabras(palabra, opcion, fila, columna)) {
+                    imprimirTexto(
+                            "La palabra excede el tamaño permitido de acuerdo a la posición dentro de la matriz");
+                }
+            } while (!validacionDireccionLetras(palabra, opcion, fila, columna)
+                    && validacionDireccionPalabras(palabra, opcion, fila, columna));
             switch (opcion) {
                 case 1:
                     haciaLaIzquierda(palabra, fila, columna);
-                    llenarMatrizPalabrasHaciaIzquierda(palabra, fila, columna);
                     imprimirSopa(sopaPalabras);
-
                     break;
                 case 2:
                     haciaLaDerecha(palabra, fila, columna);
-                    llenarMatrizPalabrashaciaLaDerecha(palabra, fila, columna);
                     imprimirSopa(sopaPalabras);
-
                     break;
                 case 3:
                     haciaAbajo(palabra, fila, columna);
+                    imprimirSopa(sopaPalabras);
                     break;
                 case 4:
                     haciaArriba(palabra, fila, columna);
+                    imprimirSopa(sopaPalabras);
                     break;
                 default:
                     break;
@@ -276,6 +333,8 @@ public class sopa {
         llenarSopa();
         imprimirSopa(sopaLetras);
         imprimirSopa(sopaPalabras);
+        sopaPalabraReinicio = sopaLetras;
+        sopaPalabraReinicioPrueba = sopaPalabraReinicio;
         imprimirTexto("\n" + "La configuracion fue realizada exitosamente");
     }
 
@@ -495,5 +554,6 @@ public class sopa {
             elecion = Integer.parseInt(leerTexto());
             menuPrincipal(elecion);
         } while (elecion != 0);
+        imprimirSopa(sopaPalabraReinicioPrueba);
     }
 }
