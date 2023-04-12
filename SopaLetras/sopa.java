@@ -6,10 +6,8 @@ public class sopa {
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     static PrintStream out = System.out;
     static String[][] sopaLetras = new String[10][10];
-    static String[][] sopaPalabraReinicio = new String[10][10];
-    static String[][] sopaPalabraReinicioPrueba = new String[10][10];
+    static String[][] sopaPalabras = new String[2][6];
     static int configuracion;
-    static String[][] sopaPalabras = new String[10][10];
     final static char[] ALFABETOMINUSCULA = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ',
             'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
     final static char[] ALFABETOMAYUSCULA = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ',
@@ -198,23 +196,15 @@ public class sopa {
             switch (opcion) {
                 case 1:
                     haciaLaIzquierda(palabra, fila, columna);
-                    imprimirSopa(sopaLetras);
-                    imprimirSopa(sopaPalabras);
                     break;
                 case 2:
                     haciaLaDerecha(palabra, fila, columna);
-                    imprimirSopa(sopaLetras);
-                    imprimirSopa(sopaPalabras);
                     break;
                 case 3:
                     haciaAbajo(palabra, fila, columna);
-                    imprimirSopa(sopaLetras);
-                    imprimirSopa(sopaPalabras);
                     break;
                 case 4:
                     haciaArriba(palabra, fila, columna);
-                    imprimirSopa(sopaLetras);
-                    imprimirSopa(sopaPalabras);
                     break;
                 default:
                     break;
@@ -223,8 +213,6 @@ public class sopa {
         } while (contador < 2);
         llenarSopa();
         imprimirSopa(sopaLetras);
-        sopaPalabraReinicio = sopaLetras;
-        sopaPalabraReinicioPrueba = sopaPalabraReinicio;
         imprimirTexto("\n" + "La configuracion fue realizada exitosamente");
         configuracion++;
     }
@@ -471,8 +459,5 @@ public class sopa {
             elecion = Integer.parseInt(leerTexto());
             menuPrincipal(elecion);
         } while (elecion != 0);
-        imprimirSopa(sopaPalabraReinicioPrueba);
-        imprimirSopa(sopaLetras);
-        imprimirSopa(sopaPalabraReinicio);
     }
 }
