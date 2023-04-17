@@ -8,6 +8,9 @@ public class sopa {
     static String[][] sopaLetras = new String[10][10];
     static String[][] sopaPalabras = new String[2][2];
     static int configuracion;
+    static int[] opciones = new int[2];
+    static int[] filas = new int[2];
+    static int[] columnas = new int[2];
     final static char[] ALFABETOMINUSCULA = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ',
             'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
     final static char[] ALFABETOMAYUSCULA = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ',
@@ -19,6 +22,24 @@ public class sopa {
 
     static String leerTexto() throws IOException {
         return in.readLine();
+    }
+
+    static int menuPrincipal() throws IOException {
+        int opcion;
+        do {
+            imprimirTexto("");
+            imprimirTexto("\033[97m Sopa de letras \n" +
+                    "MENU PRINCIPAL\n" +
+                    "1) Configurar\n" +
+                    "2) Jugar\n" +
+                    "3) Reiniciar\n" +
+                    "0) Salir");
+            opcion = Integer.parseInt(leerTexto());
+            if (opcion < -1 || opcion >= 4) {
+                imprimirTexto("Opción invalida");
+            }
+        } while (opcion <= -1 || opcion >= 5);
+        return opcion;
     }
 
     static int menuDirecciones() throws IOException {
@@ -34,7 +55,6 @@ public class sopa {
                 imprimirTexto("Opción invalida");
             }
         } while (direccion <= 0 || direccion >= 5);
-
         return direccion;
     }
 
@@ -146,20 +166,6 @@ public class sopa {
         return !resultado;
     }
 
-    static void llenarSopa() throws IOException {
-        posicionesHorizontal();
-        posicionesVertical();
-        for (int i = 0; i < sopaLetras.length; i++) {
-            for (int j = 0; j < sopaLetras.length; j++) {
-                if (sopaLetras[i][j] == null) {
-                    int numero = (int) (Math.random() * 26 + 1);
-                    char valor = ALFABETOMINUSCULA[numero];
-                    sopaLetras[i][j] = "\033[97m" + valor + "\033[97m | ";
-                }
-            }
-        }
-    }
-
     static void imprimirMatrizPalabras() throws IOException {
         for (int j = 0; j < sopaPalabras.length; j++) {
             for (int i = 0; i < sopaPalabras[j].length; i++) {
@@ -203,8 +209,15 @@ public class sopa {
             }
         }
         if (contador == 2) {
-            imprimirTexto("Ha ganado la partida");
-
+            imprimirTexto("\n" +
+                    "▒█░▒█ █▀▀ ▀▀█▀▀ █▀▀ █▀▀▄ 　 █▀▀▀ █▀▀█ █▀▀▄ █▀▀█ 　 █▀▀ █░░ 　 ░░▀ █░░█ █▀▀ █▀▀▀ █▀▀█\n" +
+                    "▒█░▒█ ▀▀█ ░░█░░ █▀▀ █░░█ 　 █░▀█ █▄▄█ █░░█ █░░█ 　 █▀▀ █░░ 　 ░░█ █░░█ █▀▀ █░▀█ █░░█\n" +
+                    "░▀▄▄▀ ▀▀▀ ░░▀░░ ▀▀▀ ▀▀▀░ 　 ▀▀▀▀ ▀░░▀ ▀░░▀ ▀▀▀▀ 　 ▀▀▀ ▀▀▀ 　 █▄█ ░▀▀▀ ▀▀▀ ▀▀▀▀ ▀▀▀▀\n" +
+                    "\n" +
+                    "▒█▀▀▀ █▀▀ █░░ ░▀░ █▀▀ ░▀░ █▀▀▄ █▀▀█ █▀▀▄ █▀▀ █▀▀\n" +
+                    "▒█▀▀▀ █▀▀ █░░ ▀█▀ █░░ ▀█▀ █░░█ █▄▄█ █░░█ █▀▀ ▀▀█\n" +
+                    "▒█░░░ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀░ ▀░░▀ ▀▀▀░ ▀▀▀ ▀▀▀\n");
+            configuracion = 0;
         }
     }
 
@@ -227,61 +240,117 @@ public class sopa {
                 jugar();
                 break;
             case 3:
+                reiniciar();
                 break;
             default:
                 break;
         }
     }
 
-    static int menuPrincipal() throws IOException {
-        int opcion;
-        do {
-            imprimirTexto("");
-            imprimirTexto("\033[97m Sopa de letras \n" +
-                    "MENU PRINCIPAL\n" +
-                    "1) Configurar\n" +
-                    "2) Jugar\n" +
-                    "3) Reiniciar\n" +
-                    "0) Salir");
-            opcion = Integer.parseInt(leerTexto());
-            if (opcion < 0 || opcion >= 4) {
-                imprimirTexto("Opción invalida");
-            }
-        } while (opcion <= 0 || opcion >= 5);
-        return opcion;
-    }
-
     static void configurar() throws IOException {
         int fila, columna, opcion, contador = 0;
         String palabra;
-        imprimirTexto("Para configurar el juego debe de ingresar 6 palabras validas");
-        do {
+        if (configuracion < 1) {
+            imprimirTexto("Para configurar el juego debe de ingresar 6 palabras validas");
             do {
                 do {
                     imprimirTexto("Ingrese la palabra " + (contador + 1) + ": ");
                     palabra = leerTexto().toLowerCase();
-                    opcion = menuDirecciones();
-                    fila = ingresarFila();
-                    columna = ingresarColumna();
+                    do {
+                        opcion = menuDirecciones();
+                        fila = ingresarFila();
+                        columna = ingresarColumna();
+                        if (validacionDireccionLetras(palabra, opcion, fila, columna)) {
+                            imprimirTexto(
+                                    "La palabra excede el tamaño permitido de acuerdo a la posición dentro de la matriz");
+                        }
+                    } while (validacionDireccionLetras(palabra, opcion, fila, columna));
                     if (validarMatrizPalabras(palabra) != -1) {
                         imprimirTexto("La palabra ya se encuentra dentros de la sopa");
                     }
                 } while (validarMatrizPalabras(palabra) != -1);
-                if (validacionDireccionLetras(palabra, opcion, fila, columna)) {
-                    imprimirTexto(
-                            "La palabra excede el tamaño permitido de acuerdo a la posición dentro de la matriz");
-                }
+                opciones[contador] = opcion;
+                filas[contador] = fila;
+                columnas[contador] = columna;
+                llenarSopaPalabras(contador, palabra);
+                llenarGuionesSopaPalabras(contador);
+                ingresarPalabra(opcion, palabra, fila, columna);
+                contador++;
+            } while (contador < 2);
+            llenarSopa();
+            imprimirSopa(sopaLetras);
+            imprimirTexto("\n" + "La configuracion fue realizada exitosamente");
+            configuracion++;
+        } else {
+            imprimirTexto("El juego ya esta configurado, elija la opción 2 para jugar");
+        }
+    }
 
-            } while (validacionDireccionLetras(palabra, opcion, fila, columna));
-            llenarSopaPalabras(contador, palabra);
-            llenarGuionesSopaPalabras(contador);
-            ingresarPalabra(opcion, palabra, fila, columna);
-            contador++;
-        } while (contador < 2);
-        llenarSopa();
-        imprimirSopa(sopaLetras);
-        imprimirTexto("\n" + "La configuracion fue realizada exitosamente");
-        configuracion++;
+    static void jugar() throws IOException {
+        int fila, columna, direccion, posicion = 0;
+        if (configuracion > 0) {
+            String palabra;
+            boolean validarDireccion;
+            do {
+                imprimirTexto("Ingrese la palabra encontrada: ");
+                palabra = leerTexto().toLowerCase();
+                posicion = validarMatrizPalabras(palabra);
+                if (posicion < 0) {
+                    imprimirTexto("La palabra no se encuentra en la sopa");
+                }
+            } while (posicion < 0);
+            do {
+                direccion = menuDirecciones();
+                fila = ingresarFila();
+                columna = ingresarColumna();
+                validarDireccion = validarDireccionPalabra(direccion, palabra, fila, columna);
+                if (!validarDireccion) {
+                    imprimirTexto("Las coordenadas ingresadas no son correctas");
+                }
+            } while (!validarDireccion);
+            validarPalabraEncontrada(direccion, palabra, fila, columna);
+        }
+        if (configuracion == 0) {
+            imprimirTexto("Debe de configurar el juego previamente");
+        }
+        marcarPalabraEncontrada(posicion);
+        ganarJuego();
+    }
+
+    static void reiniciar() throws IOException {
+        if (configuracion > 0) {
+            String palabra;
+            int opcion, fila, columna;
+            for (int i = 0; i < 2; i++) {
+                palabra = sopaPalabras[0][i];
+                opcion = opciones[i];
+                fila = filas[i];
+                columna = columnas[i];
+                ingresarPalabra(opcion, palabra, fila, columna);
+                llenarGuionesSopaPalabras(i);
+                llenarSopaPalabras(i, palabra);
+            }
+            llenarSopa();
+            imprimirSopa(sopaLetras);
+            configuracion++;
+        }
+        if (configuracion == 0) {
+            imprimirTexto("Debe de configurar el juego previamente");
+        }
+    }
+
+    static void llenarSopa() throws IOException {
+        posicionesHorizontal();
+        posicionesVertical();
+        for (int i = 0; i < sopaLetras.length; i++) {
+            for (int j = 0; j < sopaLetras.length; j++) {
+                if (sopaLetras[i][j] == null) {
+                    int numero = (int) (Math.random() * 26 + 1);
+                    char valor = ALFABETOMINUSCULA[numero];
+                    sopaLetras[i][j] = "\033[97m" + valor + "\033[97m | ";
+                }
+            }
+        }
     }
 
     static void ingresarPalabra(int opcion, String palabra, int fila, int columna) throws IOException {
@@ -326,37 +395,6 @@ public class sopa {
             }
         } while (columna <= 0 || columna >= 10);
         return columna;
-    }
-
-    static void jugar() throws IOException {
-        int fila, columna, direccion, posicion = 0;
-        if (configuracion > 0) {
-            String palabra;
-            boolean validarDireccion;
-            do {
-                imprimirTexto("Ingrese la palabra encontrada: ");
-                palabra = leerTexto().toLowerCase();
-                posicion = validarMatrizPalabras(palabra);
-                if (posicion < 0) {
-                    imprimirTexto("La palabra no se encuentra en la sopa");
-                }
-            } while (posicion < 0);
-            do {
-                direccion = menuDirecciones();
-                fila = ingresarFila();
-                columna = ingresarColumna();
-                validarDireccion = validarDireccionPalabra(direccion, palabra, fila, columna);
-                if (!validarDireccion) {
-                    imprimirTexto("Las coordenadas ingresadas no son correctas");
-                }
-            } while (!validarDireccion);
-            validarPalabraEncontrada(direccion, palabra, fila, columna);
-        }
-        if (configuracion == 0) {
-            imprimirTexto("Debe de configurar el juego previamente");
-        }
-        marcarPalabraEncontrada(posicion);
-        ganarJuego();
     }
 
     static boolean validarPalabra(String palabra) {
