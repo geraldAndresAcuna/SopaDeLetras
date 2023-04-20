@@ -371,6 +371,75 @@ public class sopa {
         ganarJuego();
     }
 
+    static boolean validarDireccionPalabra(int direccion, String palabra, int fila, int columna) {
+        boolean resultado = false;
+        switch (direccion) {
+            case 1:
+                resultado = palabraEncontradaHaciaLaIzquierdaValidacion(palabra, fila, columna);
+                break;
+            case 2:
+                resultado = palabraEncontradaHaciaLaDerechaValidacion(palabra, fila, columna);
+                break;
+            case 3:
+                resultado = palabraEncontradaHaciaAbajoValidacion(palabra, fila, columna);
+                break;
+            case 4:
+                resultado = palabraEncontradaHaciaArribaValidacion(palabra, fila, columna);
+                break;
+            default:
+                break;
+        }
+        return resultado;
+    }
+
+    static char pasarMayuscula(char letra) {
+        int posicion = 0;
+        for (int i = 0; i < ALFABETOMINUSCULA.length; i++) {
+            if (Character.toString(letra).matches(String.valueOf(ALFABETOMINUSCULA[i]))) {
+                posicion = i;
+            }
+        }
+        return ALFABETOMAYUSCULA[posicion];
+    }
+
+    static boolean palabraEncontradaHaciaArribaValidacion(String palabra, int fila, int columna) {
+        int k = 0;
+        boolean validada;
+        String palabraCreada = "", palabraIngresada = "";
+        for (int i = (palabra.length() - 1); i >= 0; i--) {
+            palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
+            palabraCreada = palabraCreada + sopaLetras[fila + k][columna];
+            k++;
+        }
+        if (palabraCreada.equals(palabraIngresada)) {
+            validada = true;
+        } else {
+            validada = false;
+        }
+        return validada;
+    }
+
+    static boolean palabraEncontradaHaciaLaIzquierdaValidacion(String palabra, int fila, int columna) {
+        int contador = 0;
+        boolean validada = false;
+        String palabraCreada = "", palabraIngresada = "", palabraMayuscula = "";
+        for (int i = 0; i < palabra.length(); i++) {
+            palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
+            palabraCreada = palabraCreada + sopaLetras[fila][columna + i];
+            palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(palabra.charAt(i)) + "\033[97m | ";
+            if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
+                    || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
+                contador++;
+            }
+        }
+        if (contador == palabra.length()) {
+            validada = true;
+        } else {
+            validada = false;
+        }
+        return validada;
+    }
+
     static void reiniciar() throws IOException {
         if (configuracion > 0) {
             String palabra;
@@ -530,32 +599,11 @@ public class sopa {
         } while (opcion != 0);
     }
 
-    static boolean validarDireccionPalabra(int direccion, String palabra, int fila, int columna) {
-        boolean resultado = false;
-        switch (direccion) {
-            case 1:
-                resultado = palabraEncontradaHaciaLaIzquierdaValidacion(palabra, fila, columna);
-                break;
-            case 2:
-                resultado = palabraEncontradaHaciaLaDerechaValidacion(palabra, fila, columna);
-                break;
-            case 3:
-                resultado = palabraEncontradaHaciaAbajoValidacion(palabra, fila, columna);
-                break;
-            case 4:
-                resultado = palabraEncontradaHaciaArribaValidacion(palabra, fila, columna);
-                break;
-            default:
-                break;
-        }
-        return resultado;
-    }
-
     static void cambioPalabraHorizontalIzquierda(String palabra, int fila, int columna) {
         char letra, letraMayuscula;
         for (int i = 0; i < palabra.length(); i++) {
             letra = palabra.charAt(i);
-            letraMayuscula = sopaCL.pasarMayuscula(letra);
+            letraMayuscula = pasarMayuscula(letra);
             sopaLetras[fila][columna + i] = "\033[31m" + letraMayuscula + "\033[97m | ";
         }
     }
@@ -565,7 +613,7 @@ public class sopa {
         int k = 0;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             letra = palabra.charAt(i);
-            letraMayuscula = sopaCL.pasarMayuscula(letra);
+            letraMayuscula = pasarMayuscula(letra);
             sopaLetras[fila][columna + k] = "\033[31m" + letraMayuscula + "\033[97m | ";
             k++;
         }
@@ -575,7 +623,7 @@ public class sopa {
         char letra, letraMayuscula;
         for (int i = 0; i < palabra.length(); i++) {
             letra = palabra.charAt(i);
-            letraMayuscula = sopaCL.pasarMayuscula(letra);
+            letraMayuscula = pasarMayuscula(letra);
             sopaLetras[fila + i][columna] = "\033[31m" + letraMayuscula + "\033[97m | ";
         }
     }
@@ -585,7 +633,7 @@ public class sopa {
         char letra, letraMayuscula;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             letra = palabra.charAt(i);
-            letraMayuscula = sopaCL.pasarMayuscula(letra);
+            letraMayuscula = pasarMayuscula(letra);
             sopaLetras[fila + k][columna] = "\033[31m" + letraMayuscula + "\033[97m | ";
             k++;
         }
@@ -599,7 +647,7 @@ public class sopa {
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
             palabraCreada = palabraCreada + sopaLetras[fila][columna + k];
-            palabraMayuscula = palabraMayuscula + "" + sopaCL.pasarMayuscula(palabra.charAt(k)) + "\033[97m | ";
+            palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(palabra.charAt(k)) + "\033[97m | ";
             k++;
             if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
                     || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
@@ -623,51 +671,13 @@ public class sopa {
             palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
             palabraCreada = palabraCreada + sopaLetras[fila + i][columna];
             letra = palabra.charAt(i);
-            palabraMayuscula = palabraMayuscula + "" + sopaCL.pasarMayuscula(letra) + "\033[97m | ";
+            palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(letra) + "\033[97m | ";
             if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
                     || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                 contador++;
             }
         }
         if (contador == palabra.length()) {
-            validada = true;
-        } else {
-            validada = false;
-        }
-        return validada;
-    }
-
-    static boolean palabraEncontradaHaciaLaIzquierdaValidacion(String palabra, int fila, int columna) {
-        int contador = 0;
-        boolean validada;
-        String palabraCreada = "", palabraIngresada = "", palabraMayuscula = "";
-        for (int i = 0; i < palabra.length(); i++) {
-            palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
-            palabraCreada = palabraCreada + sopaLetras[fila][columna + i];
-            palabraMayuscula = palabraMayuscula + "" + sopaCL.pasarMayuscula(palabra.charAt(i)) + "\033[97m | ";
-            if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
-                    || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
-                contador++;
-            }
-        }
-        if (contador == palabra.length()) {
-            validada = true;
-        } else {
-            validada = false;
-        }
-        return validada;
-    }
-
-    static boolean palabraEncontradaHaciaArribaValidacion(String palabra, int fila, int columna) {
-        int k = 0;
-        boolean validada;
-        String palabraCreada = "", palabraIngresada = "";
-        for (int i = (palabra.length() - 1); i >= 0; i--) {
-            palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
-            palabraCreada = palabraCreada + sopaLetras[fila + k][columna];
-            k++;
-        }
-        if (palabraCreada.equals(palabraIngresada)) {
             validada = true;
         } else {
             validada = false;
