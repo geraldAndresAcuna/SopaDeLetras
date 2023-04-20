@@ -24,32 +24,6 @@ public class sopa {
         return in.readLine();
     }
 
-    static void posicionesHorizontal() {
-        for (int i = 0; i < sopaLetras.length; i++) {
-            sopaLetras[0][i] = "" + (i) + " | ";
-        }
-    }
-
-    static void posicionesVertical() {
-        for (int i = 0; i < sopaLetras.length; i++) {
-            sopaLetras[i][0] = " | " + (i) + (" | ");
-        }
-    }
-
-    static void llenarSopa() throws IOException {
-        posicionesHorizontal();
-        posicionesVertical();
-        for (int i = 0; i < sopaLetras.length; i++) {
-            for (int j = 0; j < sopaLetras.length; j++) {
-                if (sopaLetras[i][j] == null) {
-                    int numero = (int) (Math.random() * 26 + 1);
-                    char valor = ALFABETOMINUSCULA[numero];
-                    sopaLetras[i][j] = "\033[97m" + valor + "\033[97m | ";
-                }
-            }
-        }
-    }
-
     static int menuPrincipal() throws IOException {
         int opcion;
         do {
@@ -311,16 +285,6 @@ public class sopa {
         }
     }
 
-    static void imprimirSopa() throws IOException {
-        for (int i = 0; i < sopaLetras.length; i++) {
-            for (int j = 0; j < sopaLetras.length; j++) {
-                out.print(sopaLetras[i][j]);
-            }
-            out.println("");
-        }
-        llenarSopa();
-    }
-
     static void menuJuego(int opcion) throws IOException {
         switch (opcion) {
             case 1:
@@ -426,6 +390,32 @@ public class sopa {
         }
         if (configuracion == 0) {
             imprimirTexto("Debe de configurar el juego previamente");
+        }
+    }
+
+    static void llenarSopa() throws IOException {
+        posicionesHorizontal();
+        posicionesVertical();
+        for (int i = 0; i < sopaLetras.length; i++) {
+            for (int j = 0; j < sopaLetras.length; j++) {
+                if (sopaLetras[i][j] == null) {
+                    int numero = (int) (Math.random() * 26 + 1);
+                    char valor = ALFABETOMINUSCULA[numero];
+                    sopaLetras[i][j] = "\033[97m" + valor + "\033[97m | ";
+                }
+            }
+        }
+    }
+
+    static void posicionesHorizontal() {
+        for (int i = 0; i < sopaLetras.length; i++) {
+            sopaLetras[0][i] = "" + (i) + " | ";
+        }
+    }
+
+    static void posicionesVertical() {
+        for (int i = 0; i < sopaLetras.length; i++) {
+            sopaLetras[i][0] = " | " + (i) + (" | ");
         }
     }
 
@@ -565,7 +555,7 @@ public class sopa {
         char letra, letraMayuscula;
         for (int i = 0; i < palabra.length(); i++) {
             letra = palabra.charAt(i);
-            letraMayuscula = pasarMayuscula(letra);
+            letraMayuscula = sopaCL.pasarMayuscula(letra);
             sopaLetras[fila][columna + i] = "\033[31m" + letraMayuscula + "\033[97m | ";
         }
     }
@@ -575,7 +565,7 @@ public class sopa {
         int k = 0;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             letra = palabra.charAt(i);
-            letraMayuscula = pasarMayuscula(letra);
+            letraMayuscula = sopaCL.pasarMayuscula(letra);
             sopaLetras[fila][columna + k] = "\033[31m" + letraMayuscula + "\033[97m | ";
             k++;
         }
@@ -585,7 +575,7 @@ public class sopa {
         char letra, letraMayuscula;
         for (int i = 0; i < palabra.length(); i++) {
             letra = palabra.charAt(i);
-            letraMayuscula = pasarMayuscula(letra);
+            letraMayuscula = sopaCL.pasarMayuscula(letra);
             sopaLetras[fila + i][columna] = "\033[31m" + letraMayuscula + "\033[97m | ";
         }
     }
@@ -595,20 +585,10 @@ public class sopa {
         char letra, letraMayuscula;
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             letra = palabra.charAt(i);
-            letraMayuscula = pasarMayuscula(letra);
+            letraMayuscula = sopaCL.pasarMayuscula(letra);
             sopaLetras[fila + k][columna] = "\033[31m" + letraMayuscula + "\033[97m | ";
             k++;
         }
-    }
-
-    static char pasarMayuscula(char letra) {
-        int posicion = 0;
-        for (int i = 0; i < ALFABETOMINUSCULA.length; i++) {
-            if (Character.toString(letra).matches(String.valueOf(ALFABETOMINUSCULA[i]))) {
-                posicion = i;
-            }
-        }
-        return ALFABETOMAYUSCULA[posicion];
     }
 
     static boolean palabraEncontradaHaciaLaDerechaValidacion(String palabra, int fila, int columna) {
@@ -619,7 +599,7 @@ public class sopa {
         for (int i = (palabra.length() - 1); i >= 0; i--) {
             palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
             palabraCreada = palabraCreada + sopaLetras[fila][columna + k];
-            palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(palabra.charAt(k)) + "\033[97m | ";
+            palabraMayuscula = palabraMayuscula + "" + sopaCL.pasarMayuscula(palabra.charAt(k)) + "\033[97m | ";
             k++;
             if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
                     || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
@@ -643,7 +623,7 @@ public class sopa {
             palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
             palabraCreada = palabraCreada + sopaLetras[fila + i][columna];
             letra = palabra.charAt(i);
-            palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(letra) + "\033[97m | ";
+            palabraMayuscula = palabraMayuscula + "" + sopaCL.pasarMayuscula(letra) + "\033[97m | ";
             if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
                     || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                 contador++;
@@ -664,7 +644,7 @@ public class sopa {
         for (int i = 0; i < palabra.length(); i++) {
             palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
             palabraCreada = palabraCreada + sopaLetras[fila][columna + i];
-            palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(palabra.charAt(i)) + "\033[97m | ";
+            palabraMayuscula = palabraMayuscula + "" + sopaCL.pasarMayuscula(palabra.charAt(i)) + "\033[97m | ";
             if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
                     || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                 contador++;
@@ -693,6 +673,16 @@ public class sopa {
             validada = false;
         }
         return validada;
+    }
+
+    static void imprimirSopa() throws IOException {
+        for (int i = 0; i < sopaLetras.length; i++) {
+            for (int j = 0; j < sopaLetras.length; j++) {
+                out.print(sopaLetras[i][j]);
+            }
+            out.println("");
+        }
+        llenarSopa();
     }
 
 }
