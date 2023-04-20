@@ -20,6 +20,32 @@ public class sopa {
         out.println(msj);
     }
 
+    static void posicionesHorizontal() {
+        for (int i = 0; i < sopaLetras.length; i++) {
+            sopaLetras[0][i] = "" + (i) + " | ";
+        }
+    }
+
+    static void posicionesVertical() {
+        for (int i = 0; i < sopaLetras.length; i++) {
+            sopaLetras[i][0] = " | " + (i) + (" | ");
+        }
+    }
+
+    static void llenarSopa() throws IOException {
+        posicionesHorizontal();
+        posicionesVertical();
+        for (int i = 0; i < sopaLetras.length; i++) {
+            for (int j = 0; j < sopaLetras.length; j++) {
+                if (sopaLetras[i][j] == null) {
+                    int numero = (int) (Math.random() * 26 + 1);
+                    char valor = ALFABETOMINUSCULA[numero];
+                    sopaLetras[i][j] = "\033[97m" + valor + "\033[97m | ";
+                }
+            }
+        }
+    }
+
     static String leerTexto() throws IOException {
         return in.readLine();
     }
@@ -462,32 +488,6 @@ public class sopa {
         }
     }
 
-    static void llenarSopa() throws IOException {
-        posicionesHorizontal();
-        posicionesVertical();
-        for (int i = 0; i < sopaLetras.length; i++) {
-            for (int j = 0; j < sopaLetras.length; j++) {
-                if (sopaLetras[i][j] == null) {
-                    int numero = (int) (Math.random() * 26 + 1);
-                    char valor = ALFABETOMINUSCULA[numero];
-                    sopaLetras[i][j] = "\033[97m" + valor + "\033[97m | ";
-                }
-            }
-        }
-    }
-
-    static void posicionesHorizontal() {
-        for (int i = 0; i < sopaLetras.length; i++) {
-            sopaLetras[0][i] = "" + (i) + " | ";
-        }
-    }
-
-    static void posicionesVertical() {
-        for (int i = 0; i < sopaLetras.length; i++) {
-            sopaLetras[i][0] = " | " + (i) + (" | ");
-        }
-    }
-
     static void ingresarPalabra(int opcion, String palabra, int fila, int columna) throws IOException {
         switch (opcion) {
             case 1:
@@ -690,7 +690,7 @@ public class sopa {
             for (int j = 0; j < sopaLetras.length; j++) {
                 out.print(sopaLetras[i][j]);
             }
-            imprimirTexto("");
+            out.println("");
         }
         llenarSopa();
     }
