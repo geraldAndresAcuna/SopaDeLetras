@@ -690,7 +690,7 @@ public class sopa {
             for (int j = 0; j < sopaLetras.length; j++) {
                 out.print(sopaLetras[i][j]);
             }
-            out.println("");
+            imprimirTexto("");
         }
         llenarSopa();
     }
