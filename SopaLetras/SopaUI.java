@@ -4,6 +4,7 @@ public class SopaUI {
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     static PrintStream out = System.out;
     static int configuracion = 0;
+
     public static void main(String[] args) throws IOException {
         int opcion = -1;
         do {
@@ -58,7 +59,7 @@ public class SopaUI {
                 SopaCL.llenarGuionesSopaPalabras(contador);
                 SopaCL.ingresarPalabra(opcion, palabra, fila, columna);
                 contador++;
-            } while (contador < 3);
+            } while (contador < 1);
             imprimirSopa();
             imprimirTextoLn("La configuracion fue realizada exitosamente");
             configuracion++;
@@ -99,7 +100,7 @@ public class SopaUI {
         mensajeGanador(SopaCL.ganarJuego());
     }
 
-    static void reiniciar()  {
+    static void reiniciar() {
         if (configuracion > 0) {
             String palabra;
             int opcion, fila, columna;
@@ -158,7 +159,7 @@ public class SopaUI {
                     "2) Izquierda a derecha\n" +
                     "3) Arriba a abajo\n" +
                     "4) Abajo a arriba\n" +
-                    "5) Diagonal Izquierda\n"+
+                    "5) Diagonal Izquierda\n" +
                     "6) Diagonal derecha");
             direccion = Integer.parseInt(leerTexto());
             if (direccion <= 0 || direccion >= 7) {
