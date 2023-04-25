@@ -1,5 +1,3 @@
-package SopaLetras;
-
 public class SopaCL {
 
         static String[][] sopaLetras = new String[10][10];
@@ -7,10 +5,12 @@ public class SopaCL {
         static int[] opciones = new int[2];
         static int[] filas = new int[2];
         static int[] columnas = new int[2];
-        final static char[] ALFABETOMINUSCULA = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ',
-                'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-        final static char[] ALFABETOMAYUSCULA = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ',
-                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+        final static char[] ALFABETOMINUSCULA = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                        'ñ',
+                        'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+        final static char[] ALFABETOMAYUSCULA = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+                        'Ñ',
+                        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
         // genera los numeros en la fila de 0 al 9
         static void numeracionFila() {
@@ -138,7 +138,7 @@ public class SopaCL {
                 int contador = 0, k = 0;
                 for (int i = (palabra.length() - 1); i >= 0; i--) {
                         if (sopaLetras[fila][columna + k].equals("\033[97m" + " " + "\033[97m | ")
-                                || sopaLetras[fila][columna + k].equals(palabra.charAt(i) + "\033[97m | ")) {
+                                        || sopaLetras[fila][columna + k].equals(palabra.charAt(i) + "\033[97m | ")) {
                                 contador++;
                         }
                         k++;
@@ -154,7 +154,8 @@ public class SopaCL {
                 int contador = 0, k = 0;
                 for (int i = (palabra.length() - 1); i >= 0; i--) {
                         if (sopaLetras[fila][columna + k].equals("\033[97m" + " " + "\033[97m | ")
-                                || sopaLetras[fila + k][columna + k].equals(palabra.charAt(i) + "\033[97m | ")) {
+                                        || sopaLetras[fila + k][columna + k]
+                                                        .equals(palabra.charAt(i) + "\033[97m | ")) {
                                 contador++;
                         }
                         k++;
@@ -171,7 +172,7 @@ public class SopaCL {
                 int k = 0;
                 for (int i = (palabra.length() - 1); i >= 0; i--) {
                         if (sopaLetras[fila + k][columna].equals("\033[97m" + " " + "\033[97m | ")
-                                || sopaLetras[fila + k][columna].equals(palabra.charAt(i) + "\033[97m | ")) {
+                                        || sopaLetras[fila + k][columna].equals(palabra.charAt(i) + "\033[97m | ")) {
                                 contador++;
                         }
                         k++;
@@ -187,7 +188,7 @@ public class SopaCL {
                 int contador = 0;
                 for (int i = 0; i < palabra.length(); i++) {
                         if (sopaLetras[fila + i][columna].equals("\033[97m" + " " + "\033[97m | ")
-                                || sopaLetras[fila + i][columna].equals(palabra.charAt(i) + "\033[97m | ")) {
+                                        || sopaLetras[fila + i][columna].equals(palabra.charAt(i) + "\033[97m | ")) {
                                 contador++;
                         }
                 }
@@ -202,7 +203,7 @@ public class SopaCL {
                 int contador = 0;
                 for (int i = 0; i < palabra.length(); i++) {
                         if (sopaLetras[fila][columna + i].equals("\033[97m" + " " + "\033[97m | ")
-                                || sopaLetras[fila][columna + i].equals(palabra.charAt(i) + "\033[97m | ")) {
+                                        || sopaLetras[fila][columna + i].equals(palabra.charAt(i) + "\033[97m | ")) {
                                 contador++;
                         }
                 }
@@ -217,7 +218,8 @@ public class SopaCL {
                 int contador = 0;
                 for (int i = 0; i < palabra.length(); i++) {
                         if (sopaLetras[fila + i][columna + i].equals("\033[97m" + " " + "\033[97m | ")
-                                || sopaLetras[fila + i][columna + i].equals(palabra.charAt(i) + "\033[97m | ")) {
+                                        || sopaLetras[fila + i][columna + i]
+                                                        .equals(palabra.charAt(i) + "\033[97m | ")) {
                                 contador++;
                         }
                 }
@@ -375,13 +377,16 @@ public class SopaCL {
         static boolean palabraEncontradaHaciaLaIzquierdaValidacion(String palabra, int fila, int columna) {
                 int contador = 0;
                 boolean validada = false;
+                char letra;
                 String palabraCreada = "\033[31m", palabraIngresada = "\033[31m", palabraMayuscula = "\033[31m";
                 for (int i = 0; i < palabra.length(); i++) {
-                        palabraIngresada = palabraIngresada + "" + palabra.charAt(i) + "\033[97m | ";
-                        palabraCreada = palabraCreada + sopaLetras[fila][columna + i];
-                        palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(palabra.charAt(i)) + "\033[97m | ";
+                        palabraIngresada = palabra.charAt(i) + "\033[97m | ";
+                        palabraCreada = sopaLetras[fila][columna + i];
+                        letra = palabraCreada.charAt(i);
+                        palabraMayuscula = pasarMayuscula(letra)
+                                        + "\033[97m | ";
                         if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
-                                || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
+                                        || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                                 contador++;
                         }
                 }
@@ -403,7 +408,7 @@ public class SopaCL {
                         palabraCreada.charAt(i);
                         palabraMayuscula.charAt(i);
                         if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
-                                || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
+                                        || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                                 contador++;
                         }
                 }
@@ -424,7 +429,7 @@ public class SopaCL {
                         palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(palabra.charAt(k)) + "\033[97m | ";
                         k++;
                         if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
-                                || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
+                                        || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                                 contador++;
                         }
                 }
@@ -445,7 +450,7 @@ public class SopaCL {
                         palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(palabra.charAt(k)) + "\033[97m | ";
                         k++;
                         if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
-                                || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
+                                        || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                                 contador++;
                         }
                 }
@@ -466,7 +471,7 @@ public class SopaCL {
                         letra = palabra.charAt(i);
                         palabraMayuscula = palabraMayuscula + "" + pasarMayuscula(letra) + "\033[97m | ";
                         if (palabraIngresada.charAt(i) == palabraCreada.charAt(i)
-                                || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
+                                        || palabraIngresada.charAt(i) == palabraMayuscula.charAt(i)) {
                                 contador++;
                         }
                 }
