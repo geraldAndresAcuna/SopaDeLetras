@@ -1,3 +1,4 @@
+package SopaLetras;
 public class SopaCL {
 
         static String[][] sopaLetras = new String[10][10];

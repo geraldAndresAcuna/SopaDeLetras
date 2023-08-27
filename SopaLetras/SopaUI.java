@@ -1,3 +1,5 @@
+package SopaLetras;
+
 import java.io.*;
 
 public class SopaUI {
